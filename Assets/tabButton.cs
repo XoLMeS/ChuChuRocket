@@ -9,6 +9,8 @@ public class tabButton : MonoBehaviour {
     private GameObject go;
     private bool moves = false;
     private float speed = 3f;
+
+    private bool on_left = false;
     // Use this for initialization
     void Start () {
         go = GameObject.Find("Panel");
@@ -17,15 +19,37 @@ public class tabButton : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Vector3 pos = go.transform.position;
-    
-        if (pos.x >= 50f)
+
+        if (on_left)
         {
-            moves = false;
-            var l = transform.Find("Text").GetComponent<Text>();
-            l.text = "←";
+            if (pos.x >= 50f)
+            {
+                moves = false;
+                on_left = false;
+                var l = transform.Find("Text").GetComponent<Text>();
+                l.text = "←";
+            }
         }
+        else
+        {
+            if (pos.x <= -50f)
+            {
+                moves = false;
+                on_left = true;
+                var l = transform.Find("Text").GetComponent<Text>();
+                l.text = "→";
+            }
+        }
+       
         if (moves){
-            pos.x += speed;
+            if (!on_left)
+            {
+                pos.x -= speed;
+            }
+            else
+            {
+                pos.x += speed;
+            }
          
             go.transform.position = pos;
            

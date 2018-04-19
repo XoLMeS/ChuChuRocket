@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
-    private float _x = 1;
-    private float _y = 0;
+    public float _x = -1;
+    public float _y = 0;
 
     private bool _active = true;
 
     private bool _do_turn = false;
 
-    private float _speed = 10;
+    public float _speed = 10;
+
+    public float secs = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +27,7 @@ public class Movement : MonoBehaviour {
             do_turn();
             _do_turn = false;
         }
-        if (_active)
+        if (Status.active)
         {
             Vector3 pos = transform.position;
             pos.x += _x / _speed;
@@ -35,28 +37,41 @@ public class Movement : MonoBehaviour {
 
     }
 
+    private void Update()
+    {
+        secs += Time.deltaTime;
+    }
+
     public void left()
     {
         _x = -1;
         _y = 0;
+
+        var rot = transform.rotation.x;
+        transform.Rotate(new Vector3(0, -rot, 0));
     }
 
     public void right()
     {
         _x = 1;
         _y = 0;
+
+        transform.Rotate(new Vector3(0, 90, 0));
     }
 
     public void down()
     {
         _x = 0;
         _y = -1;
+
     }
 
     public void up()
     {
         _x = 0;
         _y = 1;
+
+        transform.Rotate(new Vector3(0, 90, 0));
     }
 
     private void do_turn()
@@ -66,16 +81,41 @@ public class Movement : MonoBehaviour {
         pos.y -= _y / _speed;
         transform.position = pos;
 
-        if (_y != 0)
+        if (secs >= 0.2f)
         {
-            _x = _y;
-            _y = 0;
-        }
-        else if (_x != 0)
+            if (_y != 0)
+            {
+                _x = _y;
+                _y = 0;
+
+                transform.Rotate(new Vector3(0, 90, 0));
+            }
+            else if (_x != 0)
+            {
+                _y = -_x;
+                _x = 0;
+
+                transform.Rotate(new Vector3(0, 90, 0));
+            }
+        }   else
         {
-            _y = -_x;
-            _x = 0;
+            if (_y != 0)
+            {
+                _x = -_y;
+                _y = 0;
+
+                transform.Rotate(new Vector3(0, -90, 0));
+            }
+            else if (_x != 0)
+            {
+                _y = _x;
+                _x = 0;
+
+                transform.Rotate(new Vector3(0, -90, 0));
+            }
         }
+
+        secs = 0;
     }
 
     public void turn()

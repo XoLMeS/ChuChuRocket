@@ -14,7 +14,6 @@ public class RocketCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered " + other.name);
         if (other.name.Contains("mouse"))
         {
             Destroy(GameObject.Find(other.name));

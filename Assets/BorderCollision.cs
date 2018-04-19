@@ -6,18 +6,40 @@ public class BorderCollision : MonoBehaviour {
 
     public Movement move;
 
-	void OnTriggerEnter2D(Collider2D collider)
+    private void Start()
     {
-        Debug.Log("Triggered " + collider.name);
-        move = (Movement) this.GetComponent(typeof(Movement));
-        move.turn();
+        move = (Movement)this.GetComponent(typeof(Movement));
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Triggered " + other.name);
-        move = (Movement)this.GetComponent(typeof(Movement));
-        move.turn();
+        if (other.name.Contains("border"))
+        {
+            move.turn();
+        }
+
+        if (other.name.Contains("arrow"))
+        {
+            if (other.name.Contains("R"))
+            {
+                move.right();
+            }
+
+            if (other.name.Contains("L"))
+            {
+                move.left();
+            }
+
+            if (other.name.Contains("D"))
+            {
+                move.down();
+            }
+
+            if (other.name.Contains("U"))
+            {
+                move.up();
+            }
+        }
 
     }
 }
